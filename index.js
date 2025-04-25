@@ -30,3 +30,21 @@ app.get('/track', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
 });
+
+app.get('/click', (req, res) => {
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    const userAgent = req.get('User-Agent');
+    const time = new Date().toISOString();
+    const clickedLink = req.query.url || 'unknown';
+
+    console.log(`🖱️ Click tracking hit:`);
+    console.log(`    IP Address: ${ip}`);
+    console.log(`    User Agent: ${userAgent}`);
+    console.log(`    Clicked Link: ${clickedLink}`);
+    console.log(`    Time: ${time}`);
+
+    // Redirect them after tracking
+    const redirectUrl = req.query.url || 'https://yourwebsite.com'; // default
+    res.redirect(redirectUrl);
+});
+
